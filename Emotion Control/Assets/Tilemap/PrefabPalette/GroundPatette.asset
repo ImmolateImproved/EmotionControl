@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35aeb0349d14f1640a41c22e01c4030b, type: 3}
+  m_Name: GroundPatette
+  m_EditorClassIdentifier: 
+  prefabs:
+  - {fileID: 1219471545100730, guid: a36077f964914cd469807a9407b8f322, type: 3}
+  - {fileID: 1487688346712832, guid: bc4db830a27954e439182114c1a6d097, type: 3}

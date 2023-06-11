@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58770c8aa9fa74d488b29945cecba387, type: 3}
+  m_Name: Joy
+  m_EditorClassIdentifier: 
+  icon: {fileID: 21300000, guid: 8fb28920b37fd8347a09c4f70419f3a3, type: 3}
+  onUseEffect: {fileID: 141433446842962268, guid: 83fbf2cb0a8d8de419392a2e002fab1d,
+    type: 3}
+  effectDuration: 1
+  useDuration: 0

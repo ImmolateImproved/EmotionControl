@@ -1,0 +1,31 @@
+.button {
+    flex-grow: 1;
+    width: auto;
+    height: auto;
+    min-height: 50px;
+}
+
+.palette {
+    flex-grow: 1;
+    flex-direction: row;
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    background-color: rgb(46, 46, 46);
+}
+
+.foldout {
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    background-color: rgba(72, 72, 72, 0.97);
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+#unity-content {
+    flex-direction: row;
+    flex-grow: 1;
+}
