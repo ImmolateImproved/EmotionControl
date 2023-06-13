@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class TilemapHolder : MonoBehaviour
 {
-    [field: SerializeField] public Grid levelGrid { get; private set; }
+    [SerializeField] private Grid levelGrid;
     [SerializeField] private LevelLoader levelLoader;
 
     public Tilemap Tilemap { get; private set; }
@@ -40,16 +40,25 @@ public class TilemapHolder : MonoBehaviour
         }
     }
 
-    public bool PathAvailable(in Vector3Int node)
+    public bool CheckGround(Vector3Int node)
     {
-        var key0 = new TilemapKey(node, 0);
-        var key1 = new TilemapKey(node, 1);
+        var currentNodeKey0 = new TilemapKey(node, Tilemap.LOWER_LAYER_KEY);
 
-        Tilemap.TryGetTile(key1, out var res);
+        return Tilemap.TryGetTile<Ground>(currentNodeKey0, out var _);
+    }
 
-        var noObstacle = (res as Obstacle) == null;
+    public bool CheckObstacle(Vector3Int node)
+    {
+        var nextNodeKey1 = new TilemapKey(node, Tilemap.UPPER_LAYER_KEY);
 
-        return noObstacle && Tilemap.TryGetTile(key0, out var _);
+        return Tilemap.TryGetTile<Obstacle>(nextNodeKey1, out var _);
+    }
+
+    public bool TryGetDirectionSign(Vector3Int node, out DirectionSign directionSign, out TilemapKey key)
+    {
+        key = new TilemapKey(node, Tilemap.UPPER_LAYER_KEY);
+
+        return Tilemap.TryGetTile<DirectionSign>(key, out directionSign);
     }
 
     public Vector3Int WorldToNode(Vector3 worldPosition)

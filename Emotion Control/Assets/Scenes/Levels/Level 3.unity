@@ -6963,6 +6963,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2487694777929888323, guid: 4deb9da6a22f30e4c8fa9ed622df3805,
+        type: 3}
+      propertyPath: tilemap
+      value: 
+      objectReference: {fileID: 1999149385}
     - target: {fileID: 4890203880562044758, guid: 4deb9da6a22f30e4c8fa9ed622df3805,
         type: 3}
       propertyPath: grid
@@ -7079,38 +7084,13 @@ PrefabInstance:
     - target: {fileID: 1046942585970675138, guid: 831572604767c494e923a6da3774a844,
         type: 3}
       propertyPath: m_Name
-      value: GridData
+      value: Tilemap
       objectReference: {fileID: 0}
     - target: {fileID: 1046942585970675139, guid: 831572604767c494e923a6da3774a844,
         type: 3}
-      propertyPath: groundGrid
+      propertyPath: levelGrid
       value: 
       objectReference: {fileID: 1790311419}
-    - target: {fileID: 1046942585970675139, guid: 831572604767c494e923a6da3774a844,
-        type: 3}
-      propertyPath: emotionGrid
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 1046942585970675139, guid: 831572604767c494e923a6da3774a844,
-        type: 3}
-      propertyPath: obstacleGrid
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 1046942585970675139, guid: 831572604767c494e923a6da3774a844,
-        type: 3}
-      propertyPath: directionGrid
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 1046942585970675139, guid: 831572604767c494e923a6da3774a844,
-        type: 3}
-      propertyPath: <levelGrid>k__BackingField
-      value: 
-      objectReference: {fileID: 1790311419}
-    - target: {fileID: 6693260223229450220, guid: 831572604767c494e923a6da3774a844,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -0.37
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

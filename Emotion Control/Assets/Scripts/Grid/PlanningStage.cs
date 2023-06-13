@@ -61,11 +61,11 @@ public class PlanningStage : MonoBehaviour
 
     public void SpawnDirectionSign(Vector3Int node)
     {
-        var key1 = new TilemapKey(node, 1);
-        var key0 = new TilemapKey(node, 0);
+        var key1 = new TilemapKey(node, Tilemap.UPPER_LAYER_KEY);
+        var key0 = new TilemapKey(node, Tilemap.LOWER_LAYER_KEY);
 
         if (grid.Tilemap.TryGetTile<DirectionSign>(key1, out var _)) return;
-        if (!grid.Tilemap.TryGetTile(key0, out var _)) return;
+        if (!grid.Tilemap.TryGetAnyTile(key0, out var _)) return;
 
         OnSingSpawnAndDestroy?.Invoke(node, true);
 
@@ -80,7 +80,7 @@ public class PlanningStage : MonoBehaviour
 
     public void RemoveDirectionSign(Vector3Int node)
     {
-        var key = new TilemapKey(node, 1);
+        var key = new TilemapKey(node, Tilemap.UPPER_LAYER_KEY);
 
         if (!grid.Tilemap.RemoveTile<DirectionSign>(key, out var directionSign)) return;
 

@@ -75,9 +75,8 @@ GameObject:
   - component: {fileID: 388476416}
   - component: {fileID: 388476415}
   - component: {fileID: 3025375576399885656}
-  - component: {fileID: 4890203880562044758}
-  - component: {fileID: 7297512410177874873}
   - component: {fileID: 7929851048075584284}
+  - component: {fileID: 2487694777929888323}
   m_Layer: 0
   m_Name: Grunt
   m_TagString: Untagged
@@ -100,7 +99,7 @@ Transform:
   - {fileID: 1769399930}
   - {fileID: 2115219943}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &388476415
 Animator:
@@ -122,6 +121,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!54 &3025375576399885656
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -129,48 +129,26 @@ Rigidbody:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 388476414}
-  serializedVersion: 2
+  serializedVersion: 4
   m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 1
   m_Constraints: 112
   m_CollisionDetection: 0
---- !u!114 &4890203880562044758
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 388476414}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f8c625fff33168f42a501e8103cfe296, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  grid: {fileID: 0}
-  moveSpeed: 4
-  jumpHeight: 3
-  ease: 1
-  soundDelay: 1
-  characterAnimation: {fileID: 0}
---- !u!114 &7297512410177874873
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 388476414}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d624428538c5db0489e784ce9a3c261b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gridData: {fileID: 0}
-  currentEmotion: {fileID: 0}
-  currentEmotionIcon: {fileID: 0}
 --- !u!114 &7929851048075584284
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -183,6 +161,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29a95982705f36b43bcb76462c13ec60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2487694777929888323
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 388476414}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98405141745ff264285df96aa043d85b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tilemap: {fileID: 0}
+  movement:
+    moveSpeed: 4
+    jumpHeight: 2
+    ease: 1
+  characterEmotion:
+    currentEmotionIcon: {fileID: 0}
 --- !u!1 &408409025
 GameObject:
   m_ObjectHideFlags: 0

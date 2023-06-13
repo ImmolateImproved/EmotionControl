@@ -2,5 +2,5 @@
 
 public class EmotionHolder : Tile
 {
-    [field: SerializeField] public SpellBase Emotion { get; private set; }
+    [field: SerializeField] public EmotionBase Emotion { get; private set; }
 }

@@ -71,7 +71,7 @@ public class PrefabBrush : GridBrush
 
     private GameObject GetObjectInCell(TilemapKey key)
     {
-        if (TilemapHolder.Tilemap.TryGetTile(key, out var tile))
+        if (TilemapHolder.Tilemap.TryGetAnyTile(key, out var tile))
         {
             return tile.gameObject;
         }

@@ -15,12 +15,15 @@ public readonly struct TilemapKey
 
 public class Tilemap
 {
+    public const int LOWER_LAYER_KEY = 0;
+    public const int UPPER_LAYER_KEY = 1;
+
     public Dictionary<TilemapKey, Tile> tilemap;
 
     public Tilemap Init(Grid grid)
     {
         var tilesCount = grid.transform.childCount;
-
+        
         tilemap = new Dictionary<TilemapKey, Tile>(tilesCount);
 
         for (int i = 0; i < tilesCount; i++)
@@ -43,14 +46,14 @@ public class Tilemap
         tilemap.Add(key, tile);
     }
 
-    public bool TryGetTile(in TilemapKey key, out Tile tile)
+    public bool TryGetAnyTile(in TilemapKey key, out Tile tile)
     {
         return tilemap.TryGetValue(key, out tile);
     }
 
     public bool TryGetTile<T>(in TilemapKey key, out T tile) where T : Tile
     {
-        TryGetTile(key, out var res);
+        TryGetAnyTile(key, out var res);
 
         tile = res as T;
 
@@ -64,7 +67,7 @@ public class Tilemap
 
     public bool RemoveTile<T>(in TilemapKey key) where T : Tile
     {
-        if (TryGetTile(key, out var _))
+        if (TryGetAnyTile(key, out var _))
         {
             RemoveTile(key);
             return true;

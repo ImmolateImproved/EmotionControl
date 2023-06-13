@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public abstract class SpellBase : ScriptableObject
+public abstract class EmotionBase : ScriptableObject
 {
     public Sprite icon;
 

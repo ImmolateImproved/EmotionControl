@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
 
 [CreateAssetMenu(menuName = "ScriptableObjects/Emorions/Сalmness")]
-public class Сalmness : SpellBase
+public class Сalmness : EmotionBase
 {
     public override bool Use(GridMovement movement, TilemapHolder gridData, Vector3Int node)
     {
-        var key = new TilemapKey(node, 1);
+        var key = new TilemapKey(node, Tilemap.UPPER_LAYER_KEY);
 
         if (gridData.Tilemap.TryGetTile<Obstacle>(key, out var obstacle))
         {

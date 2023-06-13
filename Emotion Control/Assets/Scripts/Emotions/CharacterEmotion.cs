@@ -1,27 +1,36 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class CharacterEmotion : MonoBehaviour
+[System.Serializable]
+public class CharacterEmotion
 {
-    [SerializeField] private TilemapHolder tilemapHolder;
-    [SerializeField] private SpellBase currentEmotion;
-
+    private TilemapHolder tilemapHolder;
+    private EmotionBase currentEmotion;
     [SerializeField] private Image currentEmotionIcon;
 
-    public void Pickup(Vector3Int node)
+    public void Init(TilemapHolder tilemapHolder)
     {
-        var key = new TilemapKey(node, 1);
+        this.tilemapHolder = tilemapHolder;
+    }
+
+    public void TryPickup(Vector3Int node)
+    {
+        var key = new TilemapKey(node, Tilemap.UPPER_LAYER_KEY);
 
         if (!tilemapHolder.Tilemap.TryGetTile<EmotionHolder>(key, out var emotionHolder)) return;
 
         currentEmotion = emotionHolder.Emotion;
-        currentEmotionIcon.enabled = true;
-        currentEmotionIcon.sprite = currentEmotion.icon;
 
-        Destroy(emotionHolder.gameObject);
+        Object.Destroy(emotionHolder.gameObject);
+
+        if (currentEmotionIcon)
+        {
+            currentEmotionIcon.enabled = true;
+            currentEmotionIcon.sprite = currentEmotion.icon;
+        }
     }
 
-    public bool Use(GridMovement movement, Vector3Int node)
+    public bool TryUse(GridMovement movement, Vector3Int node)
     {
         if (currentEmotion == null) return false;
 

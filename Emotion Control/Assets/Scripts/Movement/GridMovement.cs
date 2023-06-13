@@ -3,144 +3,35 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public class GridMovement : MonoBehaviour
+[System.Serializable]
+public class GridMovement
 {
-    [SerializeField] private TilemapHolder tilemap;
+    private TilemapHolder tilemapHolder;
+    private Rigidbody rb;
 
     [SerializeField] private float moveSpeed;
     [SerializeField] private float jumpHeight;
 
     [SerializeField] private Ease ease;
 
-    [HideInInspector] public CharacterAnimation characterAnimation;
+    public CharacterAnimation CharacterAnimation { get; private set; }
+
+    public event Action OnNodeReached;
 
     public Vector3Int CurrentNode { get; set; }
+    public Vector3Int TargetNode { get; set; }
 
     public Vector3Int Direction { get; private set; }
 
-    public Vector3Int NextNode
-    {
-        get
-        {
-            var nextNode = CurrentNode + Direction;
-            nextNode.z = 0;
-
-            return nextNode;
-        }
-    }
-
     private Tween movementTween;
 
-    private Rigidbody rb;
-
-    private CharacterEmotion characterEmotion;
-
-    private void Awake()
+    public void Init(TilemapHolder tilemapHolder, GameObject owner)
     {
-        rb = GetComponent<Rigidbody>();
-        characterAnimation = GetComponent<CharacterAnimation>();
-        characterEmotion = GetComponent<CharacterEmotion>();
+        this.tilemapHolder = tilemapHolder;
+        rb = owner.GetComponent<Rigidbody>();
+        CharacterAnimation = owner.GetComponent<CharacterAnimation>();
 
-        InitPosition();
-        InitDirection();
-    }
-
-    private void Start()
-    {
-        StartCoroutine(WaitToStart());
-        //Move();
-    }
-
-    private void OnDestroy()
-    {
-        DOTween.KillAll();
-    }
-
-    public void GameOver()
-    {
-        rb.DOKill();
-    }
-
-    public void Move()
-    {
-        characterAnimation.SetRunState(true);
-        tilemap.CheckLevelEnd(CurrentNode);
-
-        characterEmotion.Pickup(CurrentNode);
-
-        var currentNodeKey1 = new TilemapKey(CurrentNode, 1);
-
-        if (tilemap.Tilemap.TryGetTile<DirectionSign>(currentNodeKey1, out var directionSign))
-        {
-            SetDirection(directionSign.Direction);
-
-            tilemap.Tilemap.RemoveTile(currentNodeKey1);
-            Destroy(directionSign.gameObject);
-        }
-
-        if (characterEmotion.Use(this, NextNode)) return;
-
-        var nextNodeKey1 = new TilemapKey(NextNode, 1);
-
-        if (tilemap.Tilemap.TryGetTile<Obstacle>(nextNodeKey1, out var _)) return;
-
-        var currentNodeKey0 = new TilemapKey(CurrentNode, 0);
-        if (!tilemap.Tilemap.TryGetTile(currentNodeKey0, out var _))
-        {
-            GameOver();
-            rb.useGravity = true;
-            return;
-        }
-        //if (!grid.PathAvailable(NextNode)) return;
-
-        var position = GetNodePosition(NextNode);
-
-        movementTween = rb.DOMove(position, moveSpeed)
-                .SetEase(ease)
-                .SetSpeedBased(true)
-                .OnComplete(() =>
-                {
-                    Move();
-                    CurrentNode = NextNode;
-                });
-    }
-
-    public void Jump()
-    {
-        movementTween.Kill();
-
-        CurrentNode = NextNode;
-        CurrentNode = NextNode;
-        var position = GetNodePosition(CurrentNode);
-
-        rb.DOJump(position, jumpHeight, 1, 0.5f).OnComplete(() =>
-        {
-            var nextNodeKey0 = new TilemapKey(NextNode, 0);
-
-            if (!tilemap.Tilemap.TryGetTile(nextNodeKey0, out var _))
-            {
-                GameOver();
-                rb.useGravity = true;
-                return;
-            }
-
-            Move();
-
-        });
-    }
-
-    public void Blink()
-    {
-        movementTween.Kill();
-
-        CurrentNode = NextNode;
-        var position = GetNodePosition(NextNode);
-
-        rb.DOMove(position, 0).OnComplete(() =>
-        {
-            Move();
-
-        });
+        InitCharacterGridPosition(owner.transform.forward);
     }
 
     public void PauseMovement(float delay)
@@ -149,52 +40,124 @@ public class GridMovement : MonoBehaviour
 
         rb.DOMove(rb.position, delay)
             .OnComplete(() =>
-          {
-              Move();
-          });
+            {
+                OnNodeReached?.Invoke();
+            });
+    }
+
+    public Vector3Int GetNextNode(int range = 1)
+    {
+        var nextNode = CurrentNode + Direction * range;
+        nextNode.z = 0;
+
+        return nextNode;
     }
 
     public Vector3 GetNodePosition(Vector3Int node)
     {
-        var position = tilemap.GetNodeCenterWorld(node);
+        var position = tilemapHolder.GetNodeCenterWorld(node);
         position.y = rb.position.y;
 
         return position;
     }
 
-    private IEnumerator WaitToStart()
-    {
-        while (true)
-        {
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                break;
-            }
-
-            yield return null;
-        }
-
-        Move();
-    }
-
-    private void InitPosition()
-    {
-        CurrentNode = tilemap.WorldToNode(rb.position);
-        rb.position = GetNodePosition(CurrentNode);
-    }
-
-    private void InitDirection()
-    {
-        var forward = transform.forward;
-        Direction = new Vector3Int((int)forward.x, (int)forward.z);
-    }
-
-    private void SetDirection(Vector3Int direction)
+    public void SetDirection(Vector3Int direction)
     {
         Direction = direction;
 
         var tmpDirection = new Vector3Int(Direction.x, 0, Direction.y);
         var rotation = Quaternion.LookRotation(tmpDirection);
-        transform.DORotateQuaternion(rotation, 0.5f);
+        rb.DORotate(rotation.eulerAngles, 0.5f);
+    }
+
+    public bool CheckGround()
+    {
+        if (!tilemapHolder.CheckGround(CurrentNode))
+        {
+            Fall();
+            return false;
+        }
+
+        return true;
+    }
+
+    public bool CheckObstacle()
+    {
+        return tilemapHolder.CheckObstacle(TargetNode);
+    }
+
+    public void Move()
+    {
+        CharacterAnimation.SetRunState(true);
+
+        var position = GetNodePosition(TargetNode);
+
+        movementTween = rb.DOMove(position, moveSpeed)
+                .SetEase(ease)
+                .SetSpeedBased(true)
+                .OnComplete(() =>
+                {
+                    CurrentNode = TargetNode;
+                    OnNodeReached?.Invoke();
+                });
+    }
+
+    public void Jump()
+    {
+        movementTween.Kill();
+
+        CurrentNode = GetNextNode(2);
+        var position = GetNodePosition(CurrentNode);
+
+        rb.DOJump(position, jumpHeight, 1, 0.5f).OnComplete(() =>
+        {
+            OnNodeReached?.Invoke();
+        });
+    }
+
+    public void Blink()
+    {
+        movementTween.Kill();
+
+        CurrentNode = GetNextNode(2);
+        var position = GetNodePosition(CurrentNode);
+
+        rb.DOMove(position, 0).OnComplete(() =>
+        {
+            OnNodeReached?.Invoke();
+        });
+    }
+
+    public void Fall()
+    {
+        movementTween.Kill();
+        rb.useGravity = true;
+    }
+
+    public void SetTargetNode()
+    {
+        CheckDirectionSign();
+        TargetNode = GetNextNode();
+    }
+
+    private void CheckDirectionSign()
+    {
+        if (tilemapHolder.TryGetDirectionSign(CurrentNode, out var directionSign, out var key))
+        {
+            SetDirection(directionSign.Direction);
+
+            tilemapHolder.Tilemap.RemoveTile(key);
+            GameObject.Destroy(directionSign.gameObject);
+        }
+    }
+
+    private void InitCharacterGridPosition(Vector3 forward)
+    {
+        CurrentNode = tilemapHolder.WorldToNode(rb.position);
+        rb.position = GetNodePosition(CurrentNode);
+
+        Direction = new Vector3Int((int)forward.x, (int)forward.z);
+
+        TargetNode = GetNextNode();
     }
 }

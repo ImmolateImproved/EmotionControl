@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
 
 [CreateAssetMenu(menuName = "ScriptableObjects/Emorions/Anger")]
-public class Anger : SpellBase
+public class Anger : EmotionBase
 {
     public override bool Use(GridMovement movement, TilemapHolder gridData, Vector3Int node)
     {
-        var key = new TilemapKey(node, 1);
+        var key = new TilemapKey(node, Tilemap.UPPER_LAYER_KEY);
 
         if (gridData.Tilemap.TryGetTile<Obstacle>(key, out var obstacle))
         {
@@ -13,7 +13,7 @@ public class Anger : SpellBase
 
             movement.PauseMovement(useDuration);
 
-            movement.characterAnimation.Attack();
+            movement.CharacterAnimation.Attack();
 
             var position = gridData.GetNodeCenterWorld(node);
 
