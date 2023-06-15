@@ -1,17 +1,12 @@
 ﻿using UnityEngine;
 
 public class SingletonFindObjectOfType<T> : MonoBehaviour
-    where T: MonoBehaviour
+    where T : MonoBehaviour
 {
-    private static T singleton;
+    public static T Singleton { get; private set; }
 
-    public static T Singleton
+    public virtual void Awake()
     {
-        get
-        {
-            if (singleton == null) singleton = FindObjectOfType<T>();
-
-            return singleton;
-        }
+        Singleton = this as T;
     }
 }

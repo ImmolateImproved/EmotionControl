@@ -2,7 +2,7 @@ using DG.Tweening;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class LevelLoader : MonoBehaviour
+public class LevelLoader : SingletonFindObjectOfType<LevelLoader>
 {
     private Vector3Int levelEndNode;
 
