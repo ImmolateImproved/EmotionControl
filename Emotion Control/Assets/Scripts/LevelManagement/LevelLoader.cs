@@ -4,11 +4,26 @@ using UnityEngine.SceneManagement;
 
 public class LevelLoader : MonoBehaviour
 {
-    private void Update()
+    private Vector3Int levelEndNode;
+
+    public void Init(TilemapHolder tilemapHolder, Character character)
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        character.OnNodeReached += CheckLevelEnd;
+
+        var node = tilemapHolder.WorldToNode(transform.position);
+        levelEndNode = node;
+
+        var position = tilemapHolder.GetNodeCenterWorld(node);
+        position.y = 0;
+        transform.position = position;
+    }
+
+    public void CheckLevelEnd(Vector3Int node)
+    {
+        if (node == levelEndNode)
         {
-            RestartLevel();
+            DOTween.KillAll();
+            LoadNextLevel();
         }
     }
 

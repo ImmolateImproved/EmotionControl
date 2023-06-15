@@ -3,41 +3,14 @@ using UnityEngine;
 
 public class TilemapHolder : MonoBehaviour
 {
-    [SerializeField] private Grid levelGrid;
-    [SerializeField] private LevelLoader levelLoader;
+    private Grid levelGrid;
 
     public Tilemap Tilemap { get; private set; }
 
-    private Vector3Int levelEndNode;
-
-    private void Awake()
+    public void Init(Grid levelGrid)
     {
-        Init();
-        InitLevelLoader();
-    }
-
-    public void Init()
-    {
+        this.levelGrid = levelGrid;
         Tilemap = new Tilemap().Init(levelGrid);
-    }
-
-    public void InitLevelLoader()
-    {
-        var node = WorldToNode(levelLoader.transform.position);
-        levelEndNode = node;
-
-        var position = GetNodeCenterWorld(node);
-        position.y = 0;
-        levelLoader.transform.position = position;
-    }
-
-    public void CheckLevelEnd(Vector3Int node)
-    {
-        if (node == levelEndNode)
-        {
-            DOTween.KillAll();
-            levelLoader.LoadNextLevel();
-        }
     }
 
     public bool CheckGround(Vector3Int node)

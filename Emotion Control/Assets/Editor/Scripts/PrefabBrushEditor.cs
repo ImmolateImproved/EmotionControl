@@ -39,7 +39,7 @@ public class PrefabBrushEditor : GridBrushEditor
 
     public override VisualElement CreateInspectorGUI()
     {
-        prefabBrush.TilemapHolder.Init();
+        prefabBrush.TilemapHolder.Init(GameObject.Find("LevelGrid").GetComponent<Grid>());
 
 
         var root = new VisualElement();

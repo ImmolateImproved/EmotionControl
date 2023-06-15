@@ -1,21 +1,13 @@
 ﻿using DG.Tweening;
-using System.Collections;
+using System;
 using UnityEngine;
 
-public class CharacterActions : MonoBehaviour
+public class Character : SingletonFindObjectOfType<Character>
 {
-    [SerializeField] private TilemapHolder tilemap;
-
     [SerializeField] private GridMovement movement;
     [SerializeField] private CharacterEmotion characterEmotion;
 
-    private void Awake()
-    {
-        movement.Init(tilemap, gameObject);
-        characterEmotion.Init(tilemap);
-
-        StartCoroutine(WaitToStart());
-    }
+    public event Action<Vector3Int> OnNodeReached;
 
     private void OnDestroy()
     {
@@ -32,24 +24,15 @@ public class CharacterActions : MonoBehaviour
         movement.OnNodeReached -= MainLoop;
     }
 
-    private IEnumerator WaitToStart()
+    public void Init(TilemapHolder tilemap)
     {
-        while (true)
-        {
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                break;
-            }
-
-            yield return null;
-        }
-
-        MainLoop();
+        movement.Init(tilemap, gameObject);
+        characterEmotion.Init(tilemap);
     }
 
-    private void MainLoop()
+    public void MainLoop()
     {
-        tilemap.CheckLevelEnd(movement.CurrentNode);
+        OnNodeReached?.Invoke(movement.CurrentNode);
 
         if (!movement.CheckGround()) return;
         movement.SetTargetNode();
