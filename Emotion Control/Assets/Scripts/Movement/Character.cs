@@ -1,13 +1,19 @@
 ﻿using DG.Tweening;
+using Services;
 using System;
 using UnityEngine;
 
-public class Character : SingletonFindObjectOfType<Character>
+public class Character : MonoBehaviour, IService
 {
     [SerializeField] private GridMovement movement;
     [SerializeField] private CharacterEmotion characterEmotion;
 
     public event Action<Vector3Int> OnNodeReached;
+
+    private void Awake()
+    {
+        ServiceLocator.Register(this);
+    }
 
     private void OnDestroy()
     {
@@ -24,10 +30,10 @@ public class Character : SingletonFindObjectOfType<Character>
         movement.OnNodeReached -= MainLoop;
     }
 
-    public void Init(TilemapHolder tilemap)
+    public void Init(TilemapHolder tilemapHolder)
     {
-        movement.Init(tilemap, gameObject);
-        characterEmotion.Init(tilemap);
+        movement.Init(tilemapHolder, gameObject);
+        characterEmotion.Init(tilemapHolder);
     }
 
     public void MainLoop()

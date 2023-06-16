@@ -1,53 +1,41 @@
-using System.Collections;
+using Services;
 using UnityEngine;
 
 public class LevelBootstrap : MonoBehaviour
 {
     [SerializeField] private TilemapHolder tilemapHolder;
-    [SerializeField] private LevelLoader levelLoader;
+    [SerializeField] private DirectionSign directionSignPrefab;
 
-    [SerializeField] private Grid levelGrid;
-    [SerializeField] private Character character;
+    private Character character;
+    private LevelLoader levelLoader;
+    private PlanningStage planingStage;
 
-    private void Start()//Start - because its need to processed after all singletons initialize
+    private void Start() //Start - because its need to processed after all services initialize
     {
-        FindAllDependency();
+        var levelGrid = ServiceLocator.Get<LevelGrid>().GetComponent<Grid>();
+        character = ServiceLocator.Get<Character>();
+        levelLoader = ServiceLocator.Get<LevelLoader>();
 
         tilemapHolder.Init(levelGrid);
         character.Init(tilemapHolder);
         levelLoader.Init(tilemapHolder, character);
 
-        StartCoroutine(WaitToStart());
+        planingStage = new PlanningStage(tilemapHolder, directionSignPrefab);
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            levelLoader.RestartLevel();
-        }
+        WaitToStart();
     }
 
-    [ContextMenu("FindAllDependency")]
-    private void FindAllDependency()
+    private void WaitToStart()
     {
-        character = Character.Singleton;
-        levelLoader = LevelLoader.Singleton;
-        levelGrid = LevelGridSingleton.Singleton.GetComponent<Grid>();
-    }
+        planingStage.Update();
 
-    private IEnumerator WaitToStart()
-    {
-        while (true)
+        if (Input.GetKeyDown(KeyCode.Space))
         {
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                break;
-            }
-
-            yield return null;
+            character.MainLoop();
+            enabled = false;
         }
-
-        character.MainLoop();
     }
 }

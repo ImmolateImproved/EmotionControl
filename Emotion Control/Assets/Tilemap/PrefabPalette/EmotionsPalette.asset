@@ -9,12 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 35aeb0349d14f1640a41c22e01c4030b, type: 3}
+  m_Script: {fileID: 11500000, guid: d041bd4b0e7ed514b9332a91aeec9709, type: 3}
   m_Name: EmotionsPalette
   m_EditorClassIdentifier: 
   prefabs:
   - {fileID: 5268407073213341715, guid: 8197847a7e7791c4abb9219c06629f1e, type: 3}
-  - {fileID: 5268407073213341715, guid: 6529f7323abdf1846bd76116ad624ea1, type: 3}
   - {fileID: 5268407073213341715, guid: bb2622477701a7b44addb1bdd00eeb35, type: 3}
+  - {fileID: 5268407073213341715, guid: 6529f7323abdf1846bd76116ad624ea1, type: 3}
   level: 1
   y: 0.5

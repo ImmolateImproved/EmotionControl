@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 35aeb0349d14f1640a41c22e01c4030b, type: 3}
+  m_Script: {fileID: 11500000, guid: d041bd4b0e7ed514b9332a91aeec9709, type: 3}
   m_Name: ObstaclesPalette
   m_EditorClassIdentifier: 
   prefabs:

@@ -1,29 +1,41 @@
-﻿using System;
+﻿using Services;
+using System;
 using UnityEngine;
 
-public class PlanningStage : MonoBehaviour
-{
-    [SerializeField] private TilemapHolder grid;
+using Object = UnityEngine.Object;
 
-    [SerializeField] private DirectionSign directionSignPrefab;
+public class PlanningStage
+{
+    private readonly TilemapHolder tilemapHolder;
+    private readonly DirectionSign directionSignPrefab;
 
     private DirectionSign lastDirectionSign;
 
     public static event Action<Vector3Int, bool> OnSingSpawnAndDestroy;
     public static event Action<DirectionSign> OnSingChangeDirection;
 
-    private void Update()
+    public PlanningStage(TilemapHolder tilemapHolder, DirectionSign directionSignPrefab)
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-            enabled = false;
+        this.tilemapHolder = tilemapHolder;
+        this.directionSignPrefab = directionSignPrefab;
+    }
 
+    public void Update()
+    {
+        SpawnDespawnSign();
+
+        ChangeSingDirection();
+    }
+
+    private void SpawnDespawnSign()
+    {
         var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         var plane = new Plane(Vector3.up, Vector3.zero);
 
         if (plane.Raycast(ray, out var distance))
         {
             var point = ray.GetPoint(distance);
-            var node = grid.WorldToNode(point);
+            var node = tilemapHolder.WorldToNode(point);
 
             if (Input.GetMouseButtonDown(0))
             {
@@ -34,7 +46,10 @@ public class PlanningStage : MonoBehaviour
                 RemoveDirectionSign(node);
             }
         }
+    }
 
+    private void ChangeSingDirection()
+    {
         if (!lastDirectionSign) return;
 
         if (Input.GetKeyDown(KeyCode.W))
@@ -59,32 +74,32 @@ public class PlanningStage : MonoBehaviour
         }
     }
 
-    public void SpawnDirectionSign(Vector3Int node)
+    private void SpawnDirectionSign(Vector3Int node)
     {
         var key1 = new TilemapKey(node, Tilemap.UPPER_LAYER_KEY);
         var key0 = new TilemapKey(node, Tilemap.LOWER_LAYER_KEY);
 
-        if (grid.Tilemap.TryGetTile<DirectionSign>(key1, out var _)) return;
-        if (!grid.Tilemap.TryGetAnyTile(key0, out var _)) return;
+        if (tilemapHolder.Tilemap.TryGetTile<DirectionSign>(key1, out var _)) return;
+        if (!tilemapHolder.Tilemap.TryGetAnyTile(key0, out var _)) return;
 
         OnSingSpawnAndDestroy?.Invoke(node, true);
 
-        var position = grid.GetNodeCenterWorld(node);
+        var position = tilemapHolder.GetNodeCenterWorld(node);
         position.y = 0;
 
-        var directionSign = Instantiate(directionSignPrefab, position, Quaternion.identity);
+        var directionSign = Object.Instantiate(directionSignPrefab, position, Quaternion.identity);
         lastDirectionSign = directionSign;
 
-        grid.Tilemap.AddTile(key1, directionSign);
+        tilemapHolder.Tilemap.AddTile(key1, directionSign);
     }
 
-    public void RemoveDirectionSign(Vector3Int node)
+    private void RemoveDirectionSign(Vector3Int node)
     {
         var key = new TilemapKey(node, Tilemap.UPPER_LAYER_KEY);
 
-        if (!grid.Tilemap.RemoveTile<DirectionSign>(key, out var directionSign)) return;
+        if (!tilemapHolder.Tilemap.RemoveTile<DirectionSign>(key, out var directionSign)) return;
 
-        Destroy(directionSign.gameObject);
+        Object.Destroy(directionSign.gameObject);
 
         OnSingSpawnAndDestroy?.Invoke(node, false);
     }

@@ -41,7 +41,6 @@ public class PrefabBrushEditor : GridBrushEditor
     {
         prefabBrush.TilemapHolder.Init(GameObject.Find("LevelGrid").GetComponent<Grid>());
 
-
         var root = new VisualElement();
         tree.CloneTree(root);
 

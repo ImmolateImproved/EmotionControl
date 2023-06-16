@@ -37,8 +37,8 @@ MonoBehaviour:
   m_CanChangeZPosition: 0
   m_FloodFillContiguousOnly: 1
   prefabPalettes:
+  - {fileID: 11400000, guid: 8b5cb64e819468a42b661ddedcc3c7f2, type: 2}
+  - {fileID: 11400000, guid: 31fa77e8e747645439df3fae815f7c45, type: 2}
   - {fileID: 11400000, guid: 6ee5729af6a0dc648b5cda48fc3ccd8f, type: 2}
-  - {fileID: 11400000, guid: 3dd5219c6fd4d884cbdb5050560ad237, type: 2}
-  - {fileID: 11400000, guid: 0889161d4486bba4683683a1e1a7c684, type: 2}
-  paletteIndex: 0
+  paletteIndex: 2
   prefabIndex: 0

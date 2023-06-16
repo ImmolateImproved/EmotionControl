@@ -9,9 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 35aeb0349d14f1640a41c22e01c4030b, type: 3}
+  m_Script: {fileID: 11500000, guid: d041bd4b0e7ed514b9332a91aeec9709, type: 3}
   m_Name: GroundPatette
   m_EditorClassIdentifier: 
   prefabs:
   - {fileID: 1219471545100730, guid: a36077f964914cd469807a9407b8f322, type: 3}
   - {fileID: 1487688346712832, guid: bc4db830a27954e439182114c1a6d097, type: 3}
+  level: 0
+  y: 0
